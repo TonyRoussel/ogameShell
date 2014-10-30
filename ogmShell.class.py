@@ -1,10 +1,10 @@
-from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
-import getpass
 import ogmSessionsManager
+import ogmShellCoreHandler
 
 class ogmShell(object):
         def __init__(self):
                 self.sessions = ogmSessionsManager.ogmSessionsManager()
+                self.core = ogmShellCoreHandler.ogmShellCore()
                 self.inputHistory = list()
                 self.userinput = None
                 self.run()
@@ -14,11 +14,8 @@ class ogmShell(object):
                         while True:
                                 prompt = self.buildPrompt()
                                 self.userinput = input(prompt)
-                                builtinRet = self._builtin(self.userinput)
-                                if (builtinRet == -1):
+                                if (self.core.run(self.userinput, self.sessions) == -1):
                                         break
-                                elif (builtinRet == -2):
-                                        continue
                 except EOFError:
                         print("exit")
 
@@ -27,31 +24,6 @@ class ogmShell(object):
                 if focusSession is None:
                         return ('> ')
                 return ('{}@{} > '.format(focusSession.username, focusSession.universe))
-
-        def _builtin(self, usrinput):
-                if (usrinput is None or usrinput.strip() == ''):
-                        return -2
-                wordList = usrinput.split()
-                if (usrinput.strip() == "exit"):
-                        return -1
-                elif (wordList[0] == 'log'):
-                        self._log(wordList)
-                        return -2
-                return -3
-
-        def _log(self, wordList):
-                if (len(wordList) != 3):
-                        print ('usage: log universe username')
-                        return
-                password = getpass.getpass("Password: ")
-                try:
-                        self.sessions.addSession(wordList[1], wordList[2], password)
-                except BAD_UNIVERSE_NAME:
-                        print ('Bad universe name')
-                except CANT_LOG:
-                        print ('Can\'t log. Your username or password may be wrong. Or maybe no interweb ?')
-                else:
-                        print ('logged as ', wordList[2], '@', wordList[1], sep='')
 
         @property
         def sessions(self):
