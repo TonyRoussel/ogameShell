@@ -1,5 +1,5 @@
 from ogame import constants
-from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED
+from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
 from bs4 import BeautifulSoup
 
 import datetime
@@ -27,7 +27,10 @@ class OGame(object):
                    'pass': self.password}
         res = self.session.post(self.get_url('login'), data=payload).content
         soup = BeautifulSoup(res)
-        self.ogame_session = soup.find('meta', {'name': 'ogame-session'}).get('content')
+        ogameSessionFinder = soup.find('meta', {'name': 'ogame-session'})
+        if (ogameSessionFinder is None):
+            raise CANT_LOG
+        self.ogame_session = ogameSessionFinder.get('content')
 
     def logout(self):
         self.session.get(self.get_url('logout'))

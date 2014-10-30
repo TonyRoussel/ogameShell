@@ -1,4 +1,4 @@
-from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED
+from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
 import getpass
 import ogmSessionsManager
 
@@ -36,6 +36,7 @@ class ogmShell(object):
                         return -1
                 elif (wordList[0] == 'log'):
                         self._log(wordList)
+                        return -2
                 return -3
 
         def _log(self, wordList):
@@ -44,12 +45,13 @@ class ogmShell(object):
                         return
                 password = getpass.getpass("Password: ")
                 try:
-                        if (self.sessions.addSession(wordList[1], wordList[2], password) is False):
-                                print ('Can\'t log. Your username or password may be wrong. Or maybe no interweb ?')
-                        else:
-                                print ('logged as ', wordList[2], '@', wordList[1], sep='')
+                        self.sessions.addSession(wordList[1], wordList[2], password)
                 except BAD_UNIVERSE_NAME:
                         print ('Bad universe name')
+                except CANT_LOG:
+                        print ('Can\'t log. Your username or password may be wrong. Or maybe no interweb ?')
+                else:
+                        print ('logged as ', wordList[2], '@', wordList[1], sep='')
 
         @property
         def sessions(self):

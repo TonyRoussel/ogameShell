@@ -11,7 +11,7 @@ Unless the asked universe doesn't exist or is doesn't supported yet, the user is
 > log universe username
 Password: 
 
-On success, the ogame session is added to the SessionManagingList and the new session is lock
+On success, the ogame session is added to the SessionManagingList and the new session is focus
 username@universe >
 
 From here, order can be sended to the session

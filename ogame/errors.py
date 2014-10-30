@@ -24,3 +24,6 @@ class BAD_BUILDING_ID(OGameException):
 
 class BAD_RESEARCH_ID(OGameException):
     pass
+
+class CANT_LOG(OGameException):
+    pass
