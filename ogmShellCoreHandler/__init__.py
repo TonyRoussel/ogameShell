@@ -1,17 +1,18 @@
+from ogmShellCoreHandler import lexer
 from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
+
 import getpass
 
 class ogmShellCore(object):
     def __init__(self):
-        self._commandSeparator = ';'
-        self._commandAnd = '&'
-        self._commandOr = '|'
+        self._lexer = lexer()
 
     def run(self, usrinput, sessions):
-        self._builtin(usrinput, sessions)
         #LEXING
+        tokenList = lexer.lexIt(usrinput)
         #PARSING
         #EXECUTION
+        self._builtin(usrinput, sessions)
 
     def _builtin(self, usrinput, sessions):
         if (usrinput is None or usrinput.strip() == ''):
@@ -43,4 +44,3 @@ class ogmShellCore(object):
 
     def _switch(self, wordList, sessions):
         sessions.switchFocus()
-
