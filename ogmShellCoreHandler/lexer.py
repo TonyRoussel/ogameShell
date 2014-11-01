@@ -6,7 +6,7 @@ class lexer(object):
         self._cmdAnd = '&&'
         self._cmdOr = '||'
         self._specialString = [self._blockSeparator, self._cmdAnd, self._cmdOr]
-        self.specialCorrespondance = {self._blockSeparator : SEP, self._cmdAnd : AND, self._cmdOr : OR}
+        self.specialCorrespondance = {self._blockSeparator : constants.SEP, self._cmdAnd : constants.AND, self._cmdOr : constants.OR}
 
     def lexIt(self, strings):
         tokenList = list()
@@ -15,12 +15,12 @@ class lexer(object):
         for string in stringsList:
             if (string in self._specialString):
                 cmdDummy = True
-                tokenList.append(token(string, self.specialCorrespondance[string]))
+                tokenList.append(token.token(string, self.specialCorrespondance[string]))
                 continue
             if (cmdDummy is True):
-                tokenList.append(token(string, CMD))
+                tokenList.append(token.token(string, constants.CMD))
                 cmdDummy = False
                 continue
-            tokenList.append(token(string, ARG))
+            tokenList.append(token.token(string, constants.ARG))
         return tokenList
             

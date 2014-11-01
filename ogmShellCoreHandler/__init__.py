@@ -1,15 +1,14 @@
 from ogmShellCoreHandler import lexer
 from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
-
 import getpass
 
 class ogmShellCore(object):
     def __init__(self):
-        self._lexer = lexer()
+        self._lexer = lexer.lexer()
 
     def run(self, usrinput, sessions):
         #LEXING
-        tokenList = lexer.lexIt(usrinput)
+        tokenList = self._lexer.lexIt(usrinput)
         #PARSING
         #EXECUTION
         self._builtin(usrinput, sessions)
