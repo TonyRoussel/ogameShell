@@ -1,5 +1,5 @@
-class cmd(object):
-    def __init__(self, prgString, argList, nxtCmd):
+class Cmd(object):
+    def __init__(self, prgString, argList, nxtCmd = None):
         self.prg = prgString
         self.arg = argList
         self.nxt = nxtCmd
