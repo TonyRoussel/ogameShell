@@ -4,7 +4,7 @@ import getpass
 
 class ogmShellCore(object):
     def __init__(self):
-        self._lexer = lexer.lexer()
+        self._lexer = lexer.Lexer()
 
     def run(self, usrinput, sessions):
         #LEXING

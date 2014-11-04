@@ -1,7 +1,7 @@
 from ogmShellCoreHandler import constants, token
 import shlex
 
-class lexer(object):
+class Lexer(object):
     def __init__(self):
         self._blockSeparator = ';'
         self._cmdAnd = '&&'

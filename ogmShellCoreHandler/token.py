@@ -10,3 +10,11 @@ class token(object):
     @string.setter
     def string(self, value):
         self._string = value
+
+    @property
+    def toktype(self):
+        return self._toktype
+
+    @toktype.setter
+    def toktype(self, value):
+        self._toktype = value
