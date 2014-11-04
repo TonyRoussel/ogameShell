@@ -1,4 +1,5 @@
 from ogmShellCoreHandler import constants, token
+import shlex
 
 class lexer(object):
     def __init__(self):
@@ -10,7 +11,7 @@ class lexer(object):
 
     def lexIt(self, strings):
         tokenList = list()
-        stringsList = strings.split()
+        stringsList = shlex.split(strings)
         cmdDummy = True
         for string in stringsList:
             if (string in self._specialString):
