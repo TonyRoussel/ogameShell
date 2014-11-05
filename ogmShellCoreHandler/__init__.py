@@ -1,16 +1,19 @@
-from ogmShellCoreHandler import lexer
+from ogmShellCoreHandler import lexer, parser
 from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
 import getpass
 
 class ogmShellCore(object):
     def __init__(self):
         self._lexer = lexer.Lexer()
+        self._parser = parser.Parser()
 
     def run(self, usrinput, sessions):
         #LEXING
         tokenList = self._lexer.lexIt(usrinput)
         #PARSING
+        treeList = self._parser.parse(tokenList)
         #EXECUTION
+        self._printTreeDebug(treeList)##########
         self._builtin(usrinput, sessions)
 
     def _builtin(self, usrinput, sessions):
@@ -43,3 +46,19 @@ class ogmShellCore(object):
 
     def _switch(self, wordList, sessions):
         sessions.switchFocus()
+
+    def _printTreeDebug(self, treeList):
+        for tree in treeList:
+            print ('NEW TREE')
+            leaf = tree
+            while True:
+                print ('cmd', leaf.cmd.prg)
+                print ('arg', leaf.cmd.arg)
+                if (leaf.left is None and leaf.right is None):
+                    break
+                if (leaf.left is not None):
+                    print ('Going Left')
+                    leaf = leaf.left
+                    continue
+                print ('Going Right')
+                leaf = leaf.right

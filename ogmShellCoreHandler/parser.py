@@ -35,6 +35,7 @@ class Parser(object):
             else:
                 tokenGroup.append(subGroup)
                 subGroup = []
+        tokenGroup.append(subGroup)
         return tokenGroup
 
     def _treePlanter(self, tokenGroup):
