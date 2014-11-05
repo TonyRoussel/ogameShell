@@ -32,10 +32,9 @@ class Tree(object):
 
 
 class Cmd(object):
-    def __init__(self, prgString, argList = None, nxtCmd = None):
+    def __init__(self, prgString, argList = None):
         self.prg = prgString
         self.arg = argList
-        self.nxt = nxtCmd
 
     @property
     def prg(self):

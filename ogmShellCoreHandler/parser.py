@@ -40,8 +40,16 @@ class Parser(object):
     def _treePlanter(self, tokenGroup):
         treeList = []
         for tokenList in tokenGroup:
-            treeList.append(self._treeSeed(tokenList))############
+            treeList.append(self._treeSeed(tokenList))
         return treeList
 
-    def _treeSeed(self, tokenList, treeleaf = None):
-        
+    def _treeSeed(self, tokenList):
+        leaf = tree.Tree(tree.Cmd(tokenList[0].string))
+        directionIndex = self._argSeek(tokenList[1:], leaf)############
+        if (directionIndex is None):
+            return leaf
+        if (tokenList[directionIndex].tokType == constants.AND):
+            leaf.left = self._treeSeed(tokenList[directionIndex + 1:])
+        else:
+            leaf.right = self._treeSeed(tokenList[directionIndex + 1:])
+        return leaf
