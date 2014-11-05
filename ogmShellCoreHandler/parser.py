@@ -45,7 +45,7 @@ class Parser(object):
 
     def _treeSeed(self, tokenList):
         leaf = tree.Tree(tree.Cmd(tokenList[0].string))
-        directionIndex = self._argSeek(tokenList[1:], leaf)############
+        directionIndex = self._argSeek(tokenList[1:], leaf)
         if (directionIndex is None):
             return leaf
         if (tokenList[directionIndex].tokType == constants.AND):
@@ -53,3 +53,10 @@ class Parser(object):
         else:
             leaf.right = self._treeSeed(tokenList[directionIndex + 1:])
         return leaf
+
+    def _argSeek(self, tokenList, leaf):
+        for index, token in enumerate(tokenList):
+            if (self._isSpecialToken(token) is True):
+                return index + 1
+            leaf.cmd.arg.append(token.string)
+        return None
