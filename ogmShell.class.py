@@ -1,5 +1,6 @@
 import ogmSessionsManager
 import ogmShellCoreHandler
+import readline
 
 class ogmShell(object):
         def __init__(self):
