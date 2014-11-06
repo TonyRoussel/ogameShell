@@ -61,3 +61,20 @@ class Parser(object):
                 return index + 1
             leaf.cmd.arg.append(token.string)
         return None
+
+    def _printTreeDebug(self, treeList):
+        for tree in treeList:
+            print ('NEW TREE')
+            leaf = tree
+            while True:
+                print ('cmd', leaf.cmd.prg)
+                print ('arg', leaf.cmd.arg)
+                if (leaf.left is None and leaf.right is None):
+                    break
+                if (leaf.left is not None):
+                    print ('Going Left')
+                    leaf = leaf.left
+                    continue
+                print ('Going Right')
+                leaf = leaf.right
+

@@ -13,7 +13,6 @@ class ogmShellCore(object):
         #PARSING
         treeList = self._parser.parse(tokenList)
         #EXECUTION
-        self._printTreeDebug(treeList)##########
         self._builtin(usrinput, sessions)
 
     def _builtin(self, usrinput, sessions):
