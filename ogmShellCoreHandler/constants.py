@@ -3,3 +3,5 @@ ARG = 1
 AND = 2
 OR = 3
 SEP = 4
+
+EXIT_CODE = -1

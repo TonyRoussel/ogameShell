@@ -1,4 +1,4 @@
-from ogmShellCoreHandler import lexer, parser
+from ogmShellCoreHandler import lexer, parser, constants
 from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
 import getpass
 
@@ -13,6 +13,10 @@ class ogmShellCore(object):
         #PARSING
         treeList = self._parser.parse(tokenList)
         #EXECUTION
+        for tree in treeList:
+            retCode = self._treeWalker(tree)################
+            if (retCode == constants.EXIT_CODE):
+                raise EOFError
         self._builtin(usrinput, sessions)
 
     def _builtin(self, usrinput, sessions):
@@ -28,6 +32,16 @@ class ogmShellCore(object):
             self._switch(wordList, sessions)
             return -2
         return -3
+
+    def _treeWalker(self, tree):
+        ret = self._nodeRun(tree.cmd)
+        if (ret == constants.EXIT_CODE or (tree.left is None and tree.right is None)):
+            return ret
+        if (tree.left is not None and ret == 0):
+            return self._treeWaler(tree.left)
+        if (tree.right is not None and ret != 0):
+            return self._treeWaler(tree.right)
+        return ret
 
     def _log(self, wordList, sessions):
         if (len(wordList) != 3):
