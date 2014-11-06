@@ -31,10 +31,11 @@ class Tree(object):
 
 
 
+
 class Cmd(object):
-    def __init__(self, prgString, argList = list()):
+    def __init__(self, prgString):
         self.prg = prgString
-        self.arg = argList
+        self.arg = []
 
     @property
     def prg(self):
@@ -59,4 +60,3 @@ class Cmd(object):
     @nxt.setter
     def nxt(self, value):
         self._nxt = value
-
