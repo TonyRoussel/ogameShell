@@ -14,51 +14,59 @@ class ogmShellCore(object):
         treeList = self._parser.parse(tokenList)
         #EXECUTION
         for tree in treeList:
-            retCode = self._treeWalker(tree)################
+            retCode = self._treeWalker(tree, sessions)
             if (retCode == constants.EXIT_CODE):
                 raise EOFError
-        self._builtin(usrinput, sessions)
+ 
+    def _builtin(self, cmd, sessions):
+        if (cmd.prg == "exit"):
+            return constants.EXIT_CODE
+        elif (cmd.prg == 'log'):
+            return self._log(cmd, sessions)
+        elif (cmd.prg == 'switch'):
+            return self._switch(cmd, sessions)
+        return 1
 
-    def _builtin(self, usrinput, sessions):
-        if (usrinput is None or usrinput.strip() == ''):
-            return -2
-        wordList = usrinput.split()
-        if (usrinput.strip() == "exit"):
-            return -1
-        elif (wordList[0] == 'log'):
-            self._log(wordList, sessions)
-            return -2
-        elif (wordList[0] == 'switch'):
-            self._switch(wordList, sessions)
-            return -2
-        return -3
-
-    def _treeWalker(self, tree):
-        ret = self._nodeRun(tree.cmd)
+    def _treeWalker(self, tree, sessions):
+        ret = self._nodeRun(tree.cmd, sessions)
         if (ret == constants.EXIT_CODE or (tree.left is None and tree.right is None)):
             return ret
         if (tree.left is not None and ret == 0):
-            return self._treeWaler(tree.left)
+            return self._treeWalker(tree.left, sessions)
         if (tree.right is not None and ret != 0):
-            return self._treeWaler(tree.right)
+            return self._treeWalker(tree.right, sessions)
         return ret
 
-    def _log(self, wordList, sessions):
-        if (len(wordList) != 3):
+    def _nodeRun(self, cmd, sessions):
+        ret = self._builtin(cmd, sessions)
+        if (ret <= 0):
+            return ret
+        # ret = self._ogameLayer(cmd, sessions)##############
+        # if (ret >= 0):
+        #     return ret
+        # self._noCommand(cmd)##############
+        return 1
+
+    def _log(self, cmd, sessions):
+        if (len(cmd.arg) != 2):
             print ('usage: log universe username')
             return
-        password = getpass.getpass("Password: ")
+        password = getpass.getpass("Password for " + cmd.arg[1] + ": ")
         try:
-            sessions.addSession(wordList[1], wordList[2], password)
+            sessions.addSession(cmd.arg[0], cmd.arg[1], password)
         except BAD_UNIVERSE_NAME:
             print ('Bad universe name')
+            return -1
         except CANT_LOG:
             print ('Can\'t log. Your username or password may be wrong. Or maybe no interweb ?')
+            return -1
         else:
-            print ('logged as ', wordList[2], '@', wordList[1], sep='')
+            print ('logged as ', cmd.arg[1], '@', cmd.arg[0], sep='')
+            return 0
 
-    def _switch(self, wordList, sessions):
+    def _switch(self, cmd, sessions):
         sessions.switchFocus()
+        return 0
 
     def _printTreeDebug(self, treeList):
         for tree in treeList:

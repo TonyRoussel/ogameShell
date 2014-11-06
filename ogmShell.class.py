@@ -11,14 +11,17 @@ class ogmShell(object):
                 self.run()
 
         def run(self):
-                try:
-                        while True:
+                while True:
+                        try:
                                 prompt = self.buildPrompt()
                                 self.userinput = input(prompt)
-                                if (self.core.run(self.userinput, self.sessions) == -1):
-                                        break
-                except EOFError:
-                        print("exit")
+                                self.core.run(self.userinput, self.sessions)
+                        except EOFError:
+                                print("exit")
+                                break
+                        except KeyboardInterrupt:
+                                print ('')
+                                continue
 
         def buildPrompt(self):
                 focusSession = self.sessions.focusedSession
