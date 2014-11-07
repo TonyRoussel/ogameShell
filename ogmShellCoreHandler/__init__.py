@@ -44,7 +44,10 @@ class ogmShellCore(object):
         # ret = self._ogameLayer(cmd, sessions)##############
         # if (ret >= 0):
         #     return ret
-        # self._noCommand(cmd)##############
+        return self._noCommand(cmd)
+
+    def _noCommand(self, cmd):
+        print (cmd.prg, ': command not found', sep='')
         return 1
 
     def _log(self, cmd, sessions):
