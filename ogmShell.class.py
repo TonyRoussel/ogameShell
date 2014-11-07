@@ -15,7 +15,8 @@ class ogmShell(object):
                         try:
                                 prompt = self.buildPrompt()
                                 self.userinput = input(prompt)
-                                self.core.run(self.userinput, self.sessions)
+                                if (self.userinput != '' and not self.userinput.isspace()):
+                                        self.core.run(self.userinput, self.sessions)
                         except EOFError:
                                 print("exit")
                                 break
