@@ -7,14 +7,25 @@ class ogmSessionsManager(object):
         self.focusedSession = None
 
     def getSession(self, universe, username):
-        """Return and set as focusedSession the session specified by username\
+        """
+        Return the session specified by username\
         and universe parameter, or False if no session can be found with the\
-        provided id"""
+        provided id
+        """
         for session in self.sessions:
             if (session.identifier == (universe, username)):
-                self.focusedSession = session
-                return self.focusedSession
+                return session
         return False
+
+    def getSessionByUsername(self, username):
+        """
+        Return a list of session matching the specified username
+        """
+        match = []
+        for session in self.sessions:
+            if (session.identifier[1] == username):
+                match.append(session)
+        return match
 
     def getSessionId(self, universe, username):
         for index, session in enumerate(self.sessions):
