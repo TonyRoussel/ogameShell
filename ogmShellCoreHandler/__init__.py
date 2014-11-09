@@ -41,10 +41,15 @@ class ogmShellCore(object):
         ret = self._builtin(cmd, sessions)
         if (ret <= 0):
             return ret
-        # ret = self._ogameLayer(cmd, sessions)##############
-        # if (ret >= 0):
-        #     return ret
+        ret = self._ogameLayer(cmd, sessions)##############
+        if (ret >= 0):
+            return ret
         return self._noCommand(cmd)
+
+    def _ogameLayer(self, cmd, sessions):
+        if (cmd.prg == "getAllRes"):
+            return (self._getAllRes(cmd, sessions))
+        return -1
 
     def _noCommand(self, cmd):
         print (cmd.prg, ': command not found', sep='')
@@ -69,6 +74,18 @@ class ogmShellCore(object):
 
     def _switch(self, cmd, sessions):
         sessions.switchFocus()
+        print('Focused session on {}@{}'.format(sessions.focusedSession.username, sessions.focusedSession.universe))
+        return 0
+
+    def _getAllRes(self, cmd, sessions):
+        if (len(cmd.arg) == 0):
+            self.printResDict(sessions.focusedSession.session.getTotalResources())
+            return 0
+        return 1
+
+    def printResDict(self, resDict):
+        for resourceType, resourceQuantity in resDict.items():
+            print(resourceType, ': ', resourceQuantity, sep='')
         return 0
 
     def _printTreeDebug(self, treeList):
