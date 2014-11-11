@@ -1,4 +1,4 @@
-from ogmShellCoreHandler import lexer, parser, constants, builtin
+from ogmShellCoreHandler import lexer, parser, constants, builtin, command
 from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
 import getpass
 
@@ -49,8 +49,8 @@ class ogmShellCore(object):
         return self._noCommand(cmd)
 
     def _ogameLayer(self, cmd, sessions):
-        if (cmd.prg == "getAllRes"):
-            return (self._getAllRes(cmd, sessions))
+        if (cmd.prg == "get"):
+            return (command.get(cmd, sessions))
         return -1
 
     def _noCommand(self, cmd):
@@ -77,17 +77,6 @@ class ogmShellCore(object):
     def _switch(self, cmd, sessions):
         sessions.switchFocus()
         print('Focused session on {}@{}'.format(sessions.focusedSession.username, sessions.focusedSession.universe))
-        return 0
-
-    def _getAllRes(self, cmd, sessions):
-        if (len(cmd.arg) == 0):
-            self.printResDict(sessions.focusedSession.session.getTotalResources())
-            return 0
-        return 1
-
-    def printResDict(self, resDict):
-        for resourceType, resourceQuantity in resDict.items():
-            print(resourceType, ': ', resourceQuantity, sep='')
         return 0
 
     def _printTreeDebug(self, treeList):
