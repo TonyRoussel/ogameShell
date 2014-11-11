@@ -6,7 +6,7 @@ def printIntelDict(intel):
     return 0
 
 def get(cmd, sessions):
-    options = getLoadOptions(cmd.arg)#########
+    options = getLoadOptions(cmd.arg)
     if (options is None):
         return constants.OPTION_UNKNOWN
     planetSet = getLoadPlanetSet(cmd.arg)#########
@@ -18,15 +18,32 @@ def get(cmd, sessions):
     return getDisplay(options, planetSet)#########
 
 def getLoadOptions(argList):
-    options = {'help' : False,
+    if (len(argList) == 0):
+        return {'help' : False,
                'unAttack' : True,
                'pendMsg' : True,
                'ships' : True,
                'resources' : True,
                'splitPlanet' : False}
+    options = {'help' : False,
+               'unAttack' : False,
+               'pendMsg' : False,
+               'ships' : False,
+               'resources' : False,
+               'splitPlanet' : False}
     for arg in argList:
         if (arg[0] != '-'):
             return options
-        for index, value in enumerate(arg):
-            # Read args and set options
+        if ('h' in arg):
+            options['help'] = True
+        if ('U' in arg):
+            options['unAttack'] = True
+        if ('m' in arg):
+            options['pendMsg'] = True
+        if ('S' in arg):
+            options['ships'] = True
+        if ('R' in arg):
+            options['resources'] = True
+        if ('p' in arg):
+            options['splitPlanet'] = True
     return options
