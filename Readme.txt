@@ -1,3 +1,5 @@
+This is a training project, so I apologise if some lines doesn't stick to the pythonic good practice :)
+
 The purpose of ogmShell is to provide a simple command-line based interface to ogame.
 Further extensions will provide more complex queue order and multi-account interaction.
 
@@ -14,9 +16,11 @@ Password:
 On success, the ogame session is added to the SessionManagingList and the new session is focus
 username@universe >
 
-From here, order can be sended to the session
-username@universe > build planet_name 250 turrets
-
 To log on another account just use the log command as explain.
 To choose which one you focus just type:
-username@universe > focus username@universe2
+username@universe > focus username@universe2 (currently in dev)
+
+Or simply use the 'switch' command to switch between the sessions
+
+From here, order can be sended to the session
+username@universe > build planet_name 250 turrets (currently in dev)
