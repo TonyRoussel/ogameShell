@@ -6,9 +6,9 @@ def focus(cmd, sessions):
         return 1
     logReq = cmd.arg[0].split('@')
     if (len(logReq) == 1):
-        return focusUsername(logReq, sessions)###########
+        return focusUsername(logReq, sessions)
     else:
-        return focusIdentifier(logReq, sessions)#########
+        return focusIdentifier(logReq, sessions)
     return 4
 
 def focusUsage():
