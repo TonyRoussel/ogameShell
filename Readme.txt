@@ -24,3 +24,23 @@ Or simply use the 'switch' command to switch between the sessions
 
 From here, order can be sended to the session
 username@universe > build planet_name 250 turrets (currently in dev)
+
+
+___________________________________________
+
+
+Commands list
+
+'get' command: (currently in dev)
+The intend of 'get' command is to provide a easy way to retrieve intel on an account.
+Without any arguments, it displays general information about the focused session, such as the under attack
+status, the pending messages, the current friendly missions in progress, and summed resources and ships
+on all planets.
+Provided options can be used to filter intels:
+		 -h display this help
+		 -U under attack status
+		 -m pending messages
+		 -S ships quantity
+		 -R display resources status
+		 -p display informations planet by planet (no sum)
+		 
