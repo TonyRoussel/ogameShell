@@ -32,6 +32,9 @@ ___________________________________________
 Commands list
 
 'get' command: (currently in dev)
+
+usage: get [-h][-U][-m][-S][-R][-p] planetNameA planetNameB planetNameC
+
 The intend of 'get' command is to provide a easy way to retrieve intel on an account.
 Without any arguments, it displays general information about the focused session, such as the under attack
 status, the pending messages, the current friendly missions in progress, and summed resources and ships
@@ -39,8 +42,9 @@ on all planets.
 Provided options can be used to filter intels:
 		 -h display this help
 		 -U under attack status
-		 -m pending messages
+		 -m pending messages quantity
 		 -S ships quantity
 		 -R display resources status
-		 -p display informations planet by planet (no sum)
-		 
+		 -p display informations planet by planet (sum is added at the end)
+One can add planets name at the end of the command to restrain the retrieval to a set
+If a planet don't match, then the command stop and return an error
