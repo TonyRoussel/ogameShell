@@ -13,6 +13,9 @@ class OGameO(ogame.OGame):
                 return (name)
         return None
 
+    def planetNameExist(self, name):
+        return name in self.planets
+
     def getPlanetsDict(self):
         """Returns the planets name"""
         planetsName = dict()
