@@ -1,4 +1,4 @@
-from ogmShellCoreHandler import lexer, parser, constants
+from ogmShellCoreHandler import lexer, parser, constants, builtin
 from ogame.errors import BAD_UNIVERSE_NAME, BAD_DEFENSE_ID, NOT_LOGGED, CANT_LOG
 import getpass
 
@@ -22,10 +22,12 @@ class ogmShellCore(object):
         if (cmd.prg == "exit"):
             return constants.EXIT_CODE
         elif (cmd.prg == 'log'):
-            return self._log(cmd, sessions)
+            return self._log(cmd, sessions) # To refactor into builtin module
         elif (cmd.prg == 'switch'):
-            return self._switch(cmd, sessions)
-        return 1
+            return self._switch(cmd, sessions) # To refactor into builtin module
+        elif (cmd.prg == 'focus'):
+            return builtin.focus(cmd, sessions)
+        return -1
 
     def _treeWalker(self, tree, sessions):
         ret = self._nodeRun(tree.cmd, sessions)
@@ -39,7 +41,7 @@ class ogmShellCore(object):
 
     def _nodeRun(self, cmd, sessions):
         ret = self._builtin(cmd, sessions)
-        if (ret <= 0):
+        if (ret >= 0):
             return ret
         ret = self._ogameLayer(cmd, sessions)##############
         if (ret >= 0):
@@ -58,16 +60,16 @@ class ogmShellCore(object):
     def _log(self, cmd, sessions):
         if (len(cmd.arg) != 2):
             print ('usage: log universe username')
-            return
+            return 1
         password = getpass.getpass("Password for " + cmd.arg[1] + ": ")
         try:
             sessions.addSession(cmd.arg[0], cmd.arg[1], password)
         except BAD_UNIVERSE_NAME:
             print ('Bad universe name')
-            return -1
+            return 2
         except CANT_LOG:
             print ('Can\'t log. Your username or password may be wrong. Or maybe no interweb ?')
-            return -1
+            return 2
         else:
             print ('logged as ', cmd.arg[1], '@', cmd.arg[0], sep='')
             return 0

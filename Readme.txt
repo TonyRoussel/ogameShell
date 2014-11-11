@@ -18,7 +18,7 @@ username@universe >
 
 To log on another account just use the log command as explain.
 To choose which one you focus just type:
-username@universe > focus username@universe2 (currently in dev)
+username@universe > focus username@universe2
 
 Or simply use the 'switch' command to switch between the sessions
 
