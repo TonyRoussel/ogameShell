@@ -9,7 +9,7 @@ def get(cmd, sessions):
     options = getLoadOptions(cmd.arg)
     if (options is None):
         return constants.OPTION_UNKNOWN
-    planetSet = getLoadPlanetSet(cmd.arg)#########
+    planetSet = getLoadPlanetSet(cmd.arg, sessions.focusedSession)#########
     if (planetSet is None):
         return constants.NO_MATCH
     errorCode = getProcess(sessions.focusedSession, options, planetSet)########
@@ -47,3 +47,6 @@ def getLoadOptions(argList):
         if ('p' in arg):
             options['splitPlanet'] = True
     return options
+
+def getLoadPlanetSet(argList, session):
+    # Load planets
