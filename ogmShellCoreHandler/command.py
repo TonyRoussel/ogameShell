@@ -1,6 +1,8 @@
 import re
 from ogmShellCoreHandler import constants
 
+import pprint##########
+
 def printIntelDict(intel):
     for intelType, intelQuantity in intel.items():
         print(intelType, ': ', intelQuantity, sep='')
@@ -13,12 +15,33 @@ def get(cmd, sessions):
     planetSet = getLoadPlanetSet(cmd.arg, sessions.focusedSession)
     if (planetSet is None):
         return getError(constants.NO_MATCH)
-    print(options, planetSet)#########
-    return 0###########
-    errorCode = getProcess(sessions.focusedSession, options, planetSet)########
+    errorCode = getProcess(sessions.focusedSession, options, planetSet)
     if (errorCode != 0):
         return getError(errorCode)
+    pprint.pprint(planetSet)#########
     return getDisplay(options, planetSet)#########
+
+def getProcess(session, options, planetSet):
+    if (options['help']):
+        return (getUsage())
+    for planetName in planetSet:
+        planetSet[planetName]['resources'] = session.session.getResources(planetName) if options['resources'] else None
+        planetSet[planetName]['ships'] = session.session.getShips(planetName) if options['ships'] else None
+        #planetSet[planetName]['resources'] = session.session.getResources(planetName) if options['resources'] else None
+    planetSet['!sum'] = getSummer(planetSet)##########
+    planetSet['!general'] = getSummer(session, options)##########
+    return 0
+
+def getUsage():
+    print("usage: get [OPTION]... [PLANETNAME]...")
+    print("OPTIONS:")
+    print("     -h display this help")
+    print("     -U under attack status")
+    print("     -m pending messages quantity")
+    print("     -S ships quantity")
+    print("     -R display resources status")
+    print("     -p display informations planet by planet (sum is added at the end)")
+    return 0
 
 def getError(errorCode):
     if (errorCode == constants.OPTION_UNKNOWN):
@@ -30,22 +53,24 @@ def getError(errorCode):
     return errorCode
 
 def getLoadOptions(argList):
-    if (len(argList) == 0):
-        return {'help' : False,
-               'unAttack' : True,
-               'pendMsg' : True,
-               'ships' : True,
-               'resources' : True,
-               'splitPlanet' : False}
+    optionsDefault = {'help' : False,
+                      'unAttack' : True,
+                      'pendMsg' : True,
+                      'ships' : True,
+                      'resources' : True,
+                      'splitPlanet' : False}
     options = {'help' : False,
                'unAttack' : False,
                'pendMsg' : False,
                'ships' : False,
                'resources' : False,
                'splitPlanet' : False}
-    for arg in argList:
+    index = -1
+    for index, arg in enumerate(argList):
         if (arg[0] != '-'):
-            return options
+            if (index != 0):
+                return options
+            return optionsDefault
         if (not re.match('^-[hUmSRp]+$', arg)):
             return None
         if ('h' in arg):
@@ -60,7 +85,9 @@ def getLoadOptions(argList):
             options['resources'] = True
         if ('p' in arg):
             options['splitPlanet'] = True
-    return options
+    if (index >= 0):
+        return options
+    return optionsDefault
 
 def getLoadPlanetSet(argList, session):
     index = 0
@@ -75,5 +102,5 @@ def getLoadPlanetSet(argList, session):
         if (not session.session.planetNameExist(planetName)):
             print(planetName, 'doesn\'t match any planet name on this session')
             return None
-        planetSet[planetName] = None
+        planetSet[planetName] = {}
     return planetSet
