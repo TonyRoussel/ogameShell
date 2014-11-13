@@ -13,8 +13,7 @@ def focus(cmd, sessions):
 
 def focusUsage():
     print("usage: focus USERNAME@UNIVERSE or focus USERNAME")
-    print("if only the username is provided and multiple sessions match,\
-     focus is unchanged and the login possibility are displayed")
+    print("if only the username is provided and multiple sessions match, focus is unchanged and the login possibility are displayed")
     return 0
 
 def focusUsername(logReq, sessions):
