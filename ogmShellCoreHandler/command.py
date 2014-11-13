@@ -13,6 +13,8 @@ def get(cmd, sessions):
     planetSet = getLoadPlanetSet(cmd.arg, sessions.focusedSession)
     if (planetSet is None):
         return getError(constants.NO_MATCH)
+    print(options, planetSet)#########
+    return 0###########
     errorCode = getProcess(sessions.focusedSession, options, planetSet)########
     if (errorCode != 0):
         return getError(errorCode)
@@ -71,6 +73,7 @@ def getLoadPlanetSet(argList, session):
     planetSet = {}
     for planetName in argList[index:]:
         if (not session.session.planetNameExist(planetName)):
+            print(planetName, 'doesn\'t match any planet name on this session')
             return None
         planetSet[planetName] = None
     return planetSet
