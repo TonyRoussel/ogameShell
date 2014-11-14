@@ -69,9 +69,9 @@ class OGame(object):
         crystal = resources['crystal']['resources']['actual']
         deuterium = resources['deuterium']['resources']['actual']
         energy = resources['energy']['resources']['actual']
-        darkmatter = resources['darkmatter']['resources']['actual']
+        # darkmatter = resources['darkmatter']['resources']['actual']
         result = {'metal': metal, 'crystal': crystal, 'deuterium': deuterium,
-                  'energy': energy, 'darkmatter': darkmatter}
+                  'energy': energy}# , 'darkmatter': darkmatter
         return result
 
     def get_ships(self, planet_id):
