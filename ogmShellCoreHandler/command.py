@@ -1,4 +1,6 @@
 import re
+from collections import Counter
+
 from ogmShellCoreHandler import constants
 
 import pprint##########
@@ -19,18 +21,45 @@ def get(cmd, sessions):
     if (errorCode != 0):
         return getError(errorCode)
     pprint.pprint(planetSet)#########
+    return 0##########
     return getDisplay(options, planetSet)#########
 
 def getProcess(session, options, planetSet):
     if (options['help']):
         return (getUsage())
     for planetName in planetSet:
-        planetSet[planetName]['resources'] = session.session.getResources(planetName) if options['resources'] else None
-        planetSet[planetName]['ships'] = session.session.getShips(planetName) if options['ships'] else None
-        #planetSet[planetName]['resources'] = session.session.getResources(planetName) if options['resources'] else None
-    planetSet['!sum'] = getSummer(planetSet)##########
-    planetSet['!general'] = getSummer(session, options)##########
+        if options['resources']:
+            planetSet[planetName]['resources'] = session.session.getResources(planetName)
+        if options['ships']:
+            planetSet[planetName]['ships'] = session.session.getShips(planetName)
+        #planetSet[planetName]['unAttack'] = session.session.isUnderAttack(planetName) if options['unAttack'] else None
+    if options['pendMsg']:
+        planetSet['!general'] = getProcessGeneral(session, options)
+    if (options['resources'] or options['ships']):
+        planetSet['!sum'] = getProcessSum(planetSet, options)
     return 0
+
+def getProcessGeneral(session, options):
+    generalInfo = {}
+    if options['pendMsg']:
+        generalInfo['pendMsg'] = session.session.pendingMsgQuantity()
+    return generalInfo
+
+def getProcessSum(planetSet, options):
+    sumInfo = {}
+    if options['resources']:
+        resources = Counter({})
+        for planetName in planetSet:
+            if planetName[0] != '!':
+                resources += Counter(planetSet[planetName]['resources'])
+        sumInfo['resources'] = resources
+    if options['ships']:
+        ships = Counter({})
+        for planetName in planetSet:
+            ships += Counter(planetSet[planetName]['ships'])
+        sumInfo['ships'] = ships
+    return sumInfo
+    
 
 def getUsage():
     print("usage: get [OPTION]... [PLANETNAME]...")
@@ -102,5 +131,5 @@ def getLoadPlanetSet(argList, session):
         if (not session.session.planetNameExist(planetName)):
             print(planetName, 'doesn\'t match any planet name on this session')
             return None
-        planetSet[planetName] = {}
+        planetSet[planetName] = {'!id': session.session.getPlanetIdByName(planetName)}
     return planetSet
