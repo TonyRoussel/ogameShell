@@ -13,6 +13,11 @@ class OGameO(ogame.OGame):
                 return (name)
         return None
 
+    def getPlanetIdByName(self, planetName):
+        if (planetName not in self.planets):
+            raise BAD_PLANET_NAME
+        return self.planets[planetName]
+
     def planetNameExist(self, name):
         return name in self.planets
 
